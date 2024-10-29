@@ -25,7 +25,7 @@ Ensure that Node.js and npm are installed on your system.
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/MinseokKim0813/assignment-tracker.git
+   git clone https://github.com/MinseokKim0813/TaskTracker.git
    cd assignment-tracker
    ```
 2. **Install dependencies**:
