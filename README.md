@@ -58,9 +58,15 @@ This project uses Material UI for UI components, which installs automatically wi
 
 This app integrates with the Zen Quotes API to fetch a daily motivational quote, displayed prominently to inspire users as they manage their assignments.
 
-## API Setup
+### API Integration
 
-The Zen Quotes API is accessed via allorigins.win, which fetches a quote from https://zenquotes.io/api/random and returns it in a CORS-friendly format. This is handled directly in the fetchQuote function within the code.
+This app integrates with the Zen Quotes API to fetch a daily motivational quote, displayed to inspire users as they manage their assignments.
+
+## API Setup and CORS Handling
+
+The Zen Quotes API (`https://zenquotes.io/api/random`) is accessed through a CORS proxy provided by [AllOrigins](https://allorigins.win). Direct requests to Zen Quotes from the app would be blocked by CORS policy, which prevents the app from fetching data from a different origin.
+
+To handle this, the `fetchQuote` function routes the request through AllOrigins (`https://api.allorigins.win/get`), which fetches the quote and returns it in a CORS-friendly format. This way, the app can retrieve and display the motivational quote seamlessly.
 
 ## AI Assistance
 
