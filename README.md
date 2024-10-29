@@ -44,11 +44,11 @@ The application will start at http://localhost:3000.
 ### Additional Dependencies
 
 This project uses Material UI for UI components, which installs automatically with npm install. If you need to install it manually, you can use:
-
+**
     ```bash
     npm install @mui/material @emotion/react @emotion/styled
     ```
-
+**
 ## Usage
 
 1. Add an Assignment: Use the form to input an assignment title and due date.
