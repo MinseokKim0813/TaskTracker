@@ -35,15 +35,22 @@ function App() {
   // Fetch a random quote from Zen Quotes API
   const fetchQuote = async () => {
     try {
+      // API request to Zen Quotes
       const response = await fetch(
         "https://api.allorigins.win/get?url=" +
-          encodeURIComponent("https://zenquotes.io/api/random"),
-        { mode: "no-cors" }
+          encodeURIComponent("https://zenquotes.io/api/random")
       );
-      const jsonResponse = await response.json();
-      setQuote(JSON.parse(jsonResponse.contents)[0]);
+
+      // check if response is ok
+      if (response.ok) {
+        const jsonResponse = await response.json();
+        const data = JSON.parse(jsonResponse.contents);
+        setQuote(data[0]); // set quote from API data
+      } else {
+        console.error("Failed to fetch quote", response.status);
+      }
     } catch (error) {
-      console.error("Error fetching quote:", error);
+      console.error("Error fetching quote:", error); // if request fails
     }
   };
 
