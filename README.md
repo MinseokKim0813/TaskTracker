@@ -1,70 +1,74 @@
-# Getting Started with Create React App
+# Assignment Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
 
-## Available Scripts
+**Assignment Tracker** is a React-based web application that helps users manage assignments effectively. It allows users to add, edit, and delete assignments with due dates, receive reminders for upcoming deadlines, and stay motivated with daily inspirational quotes.
 
-In the project directory, you can run:
+## Problem Solved
 
-### `npm start`
+Managing multiple assignments and keeping track of deadlines can be challenging. This application provides a structured way to manage assignments, ensuring that you never miss an upcoming due date while staying motivated with a daily quote.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Add, Edit, and Delete Assignments**: Users can create assignments with specific titles and due dates, edit them as needed, or remove them once completed.
+- **Daily Motivational Quote**: The app displays an inspirational quote fetched from the Zen Quotes API to keep users motivated.
+- **Due Date Reminders**: Users are notified when assignments are due within the next 24 hours, helping them stay on top of deadlines.
+- **Progress Tracking**: Visual representation of time remaining for each assignment via progress bars.
 
-### `npm test`
+## Project Setup
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
 
-### `npm run build`
+Ensure that Node.js and npm are installed on your system.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Instructions
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/MinseokKim0813/assignment-tracker.git
+   cd assignment-tracker
+   ```
+2. **Install dependencies**:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   ```bash
+   npm install
+   ```
 
-### `npm run eject`
+3. **Run the app**:
+   ```bash
+   npm start
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The application will start at http://localhost:3000.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Additional Dependencies
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+This project uses Material UI for UI components, which installs automatically with npm install. If you need to install it manually, you can use:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+    ```bash
+    npm install @mui/material @emotion/react @emotion/styled
+    ```
 
-## Learn More
+## Usage
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Add an Assignment: Use the form to input an assignment title and due date.
+2. Edit or Delete an Assignment: Click "Edit" to modify assignment details, or "Delete" to remove it.
+3. Receive Reminders: If an assignment is due within the next 24 hours, a reminder notification will appear.
+4. Motivational Quote: A new motivational quote from the Zen Quotes API will appear each time you visit the app.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## API Integration
 
-### Code Splitting
+This app integrates with the Zen Quotes API to fetch a daily motivational quote, displayed prominently to inspire users as they manage their assignments.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## API Setup
 
-### Analyzing the Bundle Size
+The Zen Quotes API is accessed via allorigins.win, which fetches a quote from https://zenquotes.io/api/random and returns it in a CORS-friendly format. This is handled directly in the fetchQuote function within the code.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## AI Assistance
 
-### Making a Progressive Web App
+This project was developed with assistance from ChatGPT. The AI contributed to:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Debugging the editing functionality for assignments.
+- Structuring the application components.
+- Setting up API integration for motivational quotes.
+- General guidance on React best practices.
