@@ -70,3 +70,4 @@ This project was developed with assistance from ChatGPT. The AI contributed to:
 - Structuring the application components.
 - Setting up API integration for motivational quotes.
 - General guidance on React best practices.
+- Including above, almost entire code.

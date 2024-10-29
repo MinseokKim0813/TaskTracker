@@ -1,4 +1,5 @@
 // src/App.js
+// I would give credit to the LLM entirely, because it generated most of the code
 
 // Importing needed libraraies and components
 import React, { useState, useEffect } from "react";

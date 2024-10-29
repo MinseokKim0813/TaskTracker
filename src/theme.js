@@ -1,4 +1,5 @@
 // src/theme.js
+// I would give credit to the LLM entirely, because it generated most of the code
 import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({

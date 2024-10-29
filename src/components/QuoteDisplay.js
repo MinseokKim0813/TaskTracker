@@ -1,4 +1,5 @@
 // src/components/QuoteDisplay.js
+// I would give credit to the LLM entirely, because it generated most of the code
 
 // Importing React and Material UI components
 import React from "react";
