@@ -35,6 +35,7 @@ function App() {
 
   // Fetch a random quote from Zen Quotes API
   const fetchQuote = async () => {
+    // Error handling
     try {
       // API request to Zen Quotes
       // Uses CORS becuase it didn't allow normal requests
@@ -43,7 +44,7 @@ function App() {
           encodeURIComponent("https://zenquotes.io/api/random")
       );
 
-      // check if response is ok
+      // Error handling: check if response is ok
       if (response.ok) {
         const jsonResponse = await response.json();
         const data = JSON.parse(jsonResponse.contents);
@@ -74,6 +75,7 @@ function App() {
       (assignment) => assignment.title.toLowerCase() === title.toLowerCase()
     );
 
+    // Edge case:
     if (duplicate) {
       // If duplicate, show alert and stop here
       alert("An assignment with this name already exists.");
