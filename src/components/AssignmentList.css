@@ -2,7 +2,7 @@
 .assignment-list {
   width: 80%;
   margin: auto;
-  color: #ffffff; /* Set text color to white or another color of choice */
+  color: #ffffff;
 }
 
 .assignment-item {
@@ -10,8 +10,8 @@
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  background-color: #3a3a3a; /* Dark background for contrast with light text */
-  color: #ffffff; /* Ensure text color is white or matches theme */
+  background-color: #3a3a3a;
+  color: #ffffff;
 }
 
 .assignment-info {
