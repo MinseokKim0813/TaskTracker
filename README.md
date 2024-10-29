@@ -43,11 +43,9 @@ The application will start at http://localhost:3000.
 
 ### Additional Dependencies
 
-**This project uses Material UI for UI components, which installs automatically with npm install. If you need to install it manually, you can use**:
+This project uses Material UI for UI components, which installs automatically with npm install. If you need to install it manually, you can use:
 
-    ```bash
     npm install @mui/material @emotion/react @emotion/styled
-    ```
 
 ## Usage
 
