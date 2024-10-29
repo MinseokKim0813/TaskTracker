@@ -1,0 +1,22 @@
+/* src/components/QuoteDisplay.css */
+.quote-container {
+  margin: 20px auto;
+  text-align: center;
+  color: #555;
+  font-size: 1.2em;
+  padding: 15px;
+  border-left: 4px solid #4caf50;
+  background: #f1f8e9;
+  border-radius: 5px;
+}
+
+.quote-text {
+  margin: 0;
+  font-style: italic;
+}
+
+.quote-author {
+  margin-top: 5px;
+  font-weight: bold;
+  color: #333;
+}

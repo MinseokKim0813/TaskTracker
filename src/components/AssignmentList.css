@@ -1,0 +1,34 @@
+/* src/components/AssignmentList.css */
+.assignment-list {
+  width: 80%;
+  margin: auto;
+  color: #ffffff; /* Set text color to white or another color of choice */
+}
+
+.assignment-item {
+  margin: 15px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #3a3a3a; /* Dark background for contrast with light text */
+  color: #ffffff; /* Ensure text color is white or matches theme */
+}
+
+.assignment-info {
+  font-size: 1.1em;
+  margin-bottom: 5px;
+  color: inherit; /* Inherit color from parent to maintain consistency */
+}
+
+.progress-bar-container {
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 12px;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #4caf50;
+  transition: width 0.3s ease;
+}
