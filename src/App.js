@@ -1,5 +1,5 @@
 // src/App.js
-// I would give credit to the LLM entirely, because it generated most of the code
+// I would give credit to the LLM entirely; I only modified the generated code
 
 // Importing needed libraraies and components
 import React, { useState, useEffect } from "react";
@@ -16,7 +16,7 @@ import { v4 as uuidv4 } from "uuid";
 
 // Main App component
 function App() {
-  // states for keeping assignments, quotes, reminders, and edit details
+  // states for keeping assignments, quotes, reminders, and edit detials
   const [assignments, setAssignments] = useState([]);
   const [quote, setQuote] = useState(null);
   const [showReminder, setShowReminder] = useState(false);
@@ -27,16 +27,17 @@ function App() {
     dueDate: "",
   });
 
-  // effect for loading quote and checking reminders when assignments change
+  // for loading quote and checking reminders when assignments change
   useEffect(() => {
     fetchQuote(); // get the quote
     checkReminders(); // check for assignments due soon
-  }, [assignments]); // re-run when assignments updates
+  }, [assignments]); // rerun when assignments updates
 
   // Fetch a random quote from Zen Quotes API
   const fetchQuote = async () => {
     try {
       // API request to Zen Quotes
+      // Uses CORS becuase it didn't allow normal requests
       const response = await fetch(
         "https://api.allorigins.win/get?url=" +
           encodeURIComponent("https://zenquotes.io/api/random")
@@ -66,7 +67,7 @@ function App() {
     setShowReminder(hasUpcoming); // set reminder if something due soon
   };
 
-  // Add a new assignment if no duplicate title is found
+  // Add a new assignment if no duplicate title
   const addAssignment = (title, dueDate) => {
     // check if title exists in assignments
     const duplicate = assignments.some(
@@ -83,10 +84,10 @@ function App() {
     setAssignments([...assignments, { id: uuidv4(), title, dueDate }]);
   };
 
-  // Update an existing assignment’s details
+  // Update assignment details
   const updateAssignment = (id, title, dueDate) => {
     const updatedAssignments = assignments.map((assignment) =>
-      // Find the assignment to update by matching ID
+      // Find the assignment by ID
       assignment.id === id ? { ...assignment, title, dueDate } : assignment
     );
     setAssignments(updatedAssignments); // save updated list
