@@ -1,5 +1,5 @@
 // src/components/AssignmentList.js
-// I would give credit to the LLM entirely; I only modified the generated code
+// I would give credit to the LLM entirely; I only modified the generated code little bit
 
 // Importing React and Material UI components
 import React from "react";

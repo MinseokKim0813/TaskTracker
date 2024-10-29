@@ -1,5 +1,5 @@
 // src/App.js
-// I would give credit to the LLM entirely; I only modified the generated code
+// I would give credit to the LLM entirely; I only modified the generated code little bit
 
 // Importing needed libraraies and components
 import React, { useState, useEffect } from "react";

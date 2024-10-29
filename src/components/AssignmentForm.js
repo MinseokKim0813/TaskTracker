@@ -1,5 +1,5 @@
 // src/components/AssignmentForm.js
-// I would give credit to the LLM entirely; I only modified the generated code
+// I would give credit to the LLM entirely; I only modified the generated code little bit
 
 // Importing needed stuff from React and Materal UI
 import React, { useState, useEffect, useRef } from "react";
