@@ -1,8 +1,8 @@
 // src/App.js
 // I would give credit to the LLM entirely; I only modified the generated code little bit
 
-// Importing needed libraraies and components
-import React, { useState, useEffect } from "react";
+// Importing needed libraries and components
+import React, { useState, useEffect, useRef } from "react";
 import { Container, Typography, Snackbar, Alert, Box } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -13,97 +13,123 @@ import AssignmentList from "./components/AssignmentList";
 import QuoteDisplay from "./components/QuoteDisplay";
 import "./App.css";
 import { v4 as uuidv4 } from "uuid";
+import {
+  db,
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  deleteDoc,
+  updateDoc,
+} from "./firebase";
 
 // Main App component
 function App() {
-  // states for keeping assignments, quotes, reminders, and edit detials
   const [assignments, setAssignments] = useState([]);
   const [quote, setQuote] = useState(null);
   const [showReminder, setShowReminder] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
+  const [requestCount, setRequestCount] = useState(0); // for rate limiting
+  const intervalRef = useRef(null); // Reference for interval to reset it
+
   const [editData, setEditData] = useState({
     id: null,
     title: "",
     dueDate: "",
   });
 
-  // for loading quote and checking reminders when assignments change
   useEffect(() => {
-    fetchQuote(); // get the quote
     checkReminders(); // check for assignments due soon
-  }, [assignments]); // rerun when assignments updates
+    fetchAssignments(); // Load assignments when app loads
+    fetchQuote(); // Fetch initial quote immediately on start
+    startAutoQuoteInterval(); // Start interval for fetching quotes every 30 seconds
 
-  // Fetch a random quote from Zen Quotes API
+    return () => {
+      clearInterval(intervalRef.current); // Clean up on unmount
+    };
+  }, []);
+
+  // Start or reset the auto quote interval
+  const startAutoQuoteInterval = () => {
+    clearInterval(intervalRef.current); // Clear existing interval
+    intervalRef.current = setInterval(() => {
+      fetchQuote(); // Fetch a new quote
+      setRequestCount(0); // Reset request count every 30 seconds
+    }, 30000); // 30 seconds
+  };
+
+  // Fetch assignments from Firestore
+  const fetchAssignments = async () => {
+    const querySnapshot = await getDocs(collection(db, "assignments"));
+    const assignmentsData = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setAssignments(assignmentsData);
+  };
+
+  // Fetch a random quote from Zen Quotes API with rate limiting
   const fetchQuote = async () => {
-    // Error handling
-    try {
-      // API request to Zen Quotes
-      // Uses CORS becuase it didn't allow normal requests
-      const response = await fetch(
-        "https://api.allorigins.win/get?url=" +
-          encodeURIComponent("https://zenquotes.io/api/random")
-      );
-
-      // Error handling: check if response is ok
-      if (response.ok) {
-        const jsonResponse = await response.json();
-        const data = JSON.parse(jsonResponse.contents);
-        setQuote(data[0]); // set quote from API data
-      } else {
-        console.error("Failed to fetch quote", response.status);
+    if (requestCount < 5) {
+      // Check if within rate limit
+      try {
+        const response = await fetch(
+          "https://api.allorigins.win/get?url=" +
+            encodeURIComponent("https://zenquotes.io/api/random")
+        );
+        if (response.ok) {
+          const jsonResponse = await response.json();
+          const data = JSON.parse(jsonResponse.contents);
+          setQuote(data[0]);
+          setRequestCount((prevCount) => prevCount + 1); // Increment request count
+          startAutoQuoteInterval(); // Reset interval when manually fetching
+        } else {
+          console.error("Failed to fetch quote", response.status);
+        }
+      } catch (error) {
+        console.error("Error fetching quote:", error);
       }
-    } catch (error) {
-      console.error("Error fetching quote:", error); // if request fails
+    } else {
+      console.log("API limit reached. Try again after 30 seconds.");
     }
   };
 
-  // Check if any assignments are due within next 24 hrs
+  // Check if any assignments are due within the next 24 hours
   const checkReminders = () => {
-    const now = new Date(); // Current time
+    const now = new Date();
     const hasUpcoming = assignments.some((assignment) => {
-      const due = new Date(assignment.dueDate); // due date of assignment
-      // If due within 24 hours, return true
+      const due = new Date(assignment.dueDate);
       return (due - now) / (1000 * 60 * 60) <= 24;
     });
-    setShowReminder(hasUpcoming); // set reminder if something due soon
+    setShowReminder(hasUpcoming);
   };
 
-  // Add a new assignment if no duplicate title
-  const addAssignment = (title, dueDate) => {
-    // check if title exists in assignments
+  // Add a new assignment to Firestore
+  const addAssignment = async (title, dueDate) => {
     const duplicate = assignments.some(
       (assignment) => assignment.title.toLowerCase() === title.toLowerCase()
     );
-
-    // Edge case:
     if (duplicate) {
-      // If duplicate, show alert and stop here
       alert("An assignment with this name already exists.");
       return;
     }
-
-    // Add the assignment with unique ID if no duplicate
-    setAssignments([...assignments, { id: uuidv4(), title, dueDate }]);
+    const newAssignment = { title, dueDate };
+    const docRef = await addDoc(collection(db, "assignments"), newAssignment);
+    setAssignments([...assignments, { id: docRef.id, ...newAssignment }]);
   };
 
-  // Update assignment details
-  const updateAssignment = (id, title, dueDate) => {
-    const updatedAssignments = assignments.map((assignment) =>
-      // Find the assignment by ID
-      assignment.id === id ? { ...assignment, title, dueDate } : assignment
-    );
-    setAssignments(updatedAssignments); // save updated list
-    setEditingIndex(null); // Reset edit state
-    setEditData({ id: null, title: "", dueDate: "" }); // Clear edit data
+  // Update Firestore when editing
+  const updateAssignment = async (id, title, dueDate) => {
+    const assignmentDoc = doc(db, "assignments", id);
+    await updateDoc(assignmentDoc, { title, dueDate });
+    fetchAssignments(); // Refresh after updating
+    setEditingIndex(null); // Reset to switch back to "Add Assignment" mode
   };
 
   // Load assignment data into editData for editing
   const handleEdit = (id) => {
-    // Find assignment by its ID
     const assignment = assignments.find((assignment) => assignment.id === id);
-
     if (assignment) {
-      // if found, set editing mode and load data
       setEditingIndex(id);
       setEditData({
         id: assignment.id,
@@ -111,23 +137,24 @@ function App() {
         dueDate: assignment.dueDate,
       });
     } else {
-      console.error("Assignment not found for editing."); // log if not found
+      console.error("Assignment not found for editing.");
     }
   };
 
-  // Delete an assignment by ID
-  const handleDelete = (id) => {
-    // Remove assignment with matching ID
-    setAssignments(assignments.filter((assignment) => assignment.id !== id));
-    if (editingIndex === id) setEditingIndex(null); // clear edit state if needed
+  // Delete an assignment from Firestore
+  const handleDelete = async (id) => {
+    await deleteDoc(doc(db, "assignments", id));
+    fetchAssignments();
   };
 
   // Handle form submission to add or update assignment
   const handleFormSubmit = (title, dueDate) => {
     if (editingIndex !== null) {
-      updateAssignment(editingIndex, title, dueDate); // update if editing
+      updateAssignment(editingIndex, title, dueDate);
+      setEditingIndex(null); // Reset editing index
+      setEditData({ id: null, title: "", dueDate: "" }); // Reset editData to clear form
     } else {
-      addAssignment(title, dueDate); // add new if not editing
+      addAssignment(title, dueDate);
     }
   };
 
@@ -156,8 +183,10 @@ function App() {
             <Typography variant="h2" align="center" gutterBottom>
               Assignment Tracker
             </Typography>
-            {/* Display the quote */}
-            <QuoteDisplay quote={quote} />
+            {/* Display the quote with click handler */}
+            <div onClick={fetchQuote} style={{ cursor: "pointer" }}>
+              <QuoteDisplay quote={quote} />
+            </div>
             {/* Form for adding or editing assignments */}
             <AssignmentForm
               handleFormSubmit={handleFormSubmit}
